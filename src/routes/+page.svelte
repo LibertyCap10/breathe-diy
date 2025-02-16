@@ -1,4 +1,5 @@
 <script>
+    import Icon from "@iconify/svelte";
     import { Chart, registerables } from 'chart.js';
     Chart.register(...registerables);
     import { onMount } from 'svelte';
@@ -31,6 +32,8 @@
         drawerIsOpen: false
     });
 
+
+
     const openDrawer = () => {
         state.drawerIsOpen = true; 
         console.log("clicked!")
@@ -40,6 +43,20 @@
     const clearTimers = () => {
         clearTimeout(state.timer);
         clearInterval(state.interval);
+    };
+
+    const resetSession = () => {
+        clearTimers();
+        state.phase = 'idle';
+        state.breathCount = 0;
+        state.deepBreathingTime = 0;
+        state.results = [];
+        state.round = 1;
+        state.showResultsOverlay = false;
+
+        // Reset the chart
+        resetChart(chartCanvas);
+        resetChart(modalChartCanvas);
     };
 
     const startSession = () => {
@@ -194,7 +211,7 @@
 
 <nav class="flex w-full py-3 px-6 flex items-center justify-between bg-gray-900 ">
     <!-- Logo on the left -->
-    <img src={logo} alt="Logo" class="h-14" />
+    <button onclick={resetSession}><img src={logo} alt="Logo" class="h-14" /></button>
 
     <p class="text-lg font-bold text-white pl-4">Round: {state.round}</p>
 
@@ -205,17 +222,23 @@
         onclick={openDrawer}
         href="/"
     >
-        <Drawer open={state.drawerIsOpen}></Drawer>
+        <Drawer open={state.drawerIsOpen} results={state.results} class="backdrop-blur-lg"></Drawer>
     </a>
 
 </nav>
 
 
-<div class="flex flex-col items-center justify-center bg-gray-900 text-white p-4 mt-6">
-    <div class="flex space-x-4 mb-8">
-        <div class={`px-1 py-2 rounded-sm ${state.phase === 'deep-breathing' ? 'bg-blue-500 text-white' : 'bg-gray-700'}`}>Deep Breathing</div>
-        <div class={`px-1 py-2 rounded-sm ${state.phase === 'exhale-hold' ? 'bg-yellow-500 text-white' : 'bg-gray-700'}`}>Exhale Hold</div>
-        <div class={`px-1 py-2 rounded-sm ${state.phase === 'inhale-hold' ? 'bg-green-500 text-white' : 'bg-gray-700'}`}>Inhale Hold</div>
+<div class="flex flex-col items-center justify-center bg-gray-900 text-white p-0 mt-6">
+    <div class="flex space-x-0 mb-8">
+        <div class={`px-2 py-2 rounded-sm text-sm ${state.phase === 'deep-breathing' ? 'bg-blue-500 text-white' : 'bg-gray-700'}`}>Deep Breathing</div>
+
+        <Icon icon="tabler:arrow-badge-right" width="24" height="24" class="pt-2"/>
+
+        <div class={`px-2 py-2 rounded-sm text-sm ${state.phase === 'exhale-hold' ? 'bg-blue-500 text-white' : 'bg-gray-700'}`}>Exhale Hold</div>
+
+        <Icon icon="tabler:arrow-badge-right" width="24" height="24" class="pt-2" />
+        
+        <div class={`px-2 py-2 rounded-sm text-sm ${state.phase === 'inhale-hold' ? 'bg-blue-500 text-white' : 'bg-gray-700'}`}>Inhale Hold</div>
     </div>
 
     <div class="flex mb-18 ml-7 lg:ml-7">
@@ -253,32 +276,6 @@
 
 
 <div class="flex flex-col items-center justify-center bg-gray-900 text-white p-4">
-
-    {#if state.results.length > 0}
-        <div class="mt-20 w-full max-w-md">
-            <h2 class="text-xl font-bold mb-2">Results</h2>
-            <table class="w-full border-collapse border border-gray-700">
-                <thead>
-                    <tr class="bg-gray-800">
-                        <th class="border border-gray-700 px-2 py-1">Round</th>
-                        <th class="border border-gray-700 px-2 py-1">Deep Breathing</th>
-                        <th class="border border-gray-700 px-2 py-1">Exhale Hold</th>
-                        <th class="border border-gray-700 px-2 py-1">Inhale Hold</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {#each state.results as result}
-                        <tr class="text-center">
-                            <td class="border border-gray-700 px-2 py-1">{result.round}</td>
-                            <td class="border border-gray-700 px-2 py-1">{result.breathCount} breaths</td>
-                            <td class="border border-gray-700 px-2 py-1">{result.exhaleHold}s</td>
-                            <td class="border border-gray-700 px-2 py-1">{15 - Number(result.inhaleHold)}s</td>
-                        </tr>
-                    {/each}
-                </tbody>
-            </table>
-        </div>
-    {/if}
 
 
     <!-- <div class="mt-6 w-full max-w-md">

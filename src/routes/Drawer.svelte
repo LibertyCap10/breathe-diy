@@ -9,7 +9,10 @@
     import { isMobile } from '$lib/stores/screen';
 
     export let open = false;
+    export let results = [];
 </script>
+
+
 
 
 {#if $isMobile}
@@ -25,23 +28,42 @@
     <Drawer.Content class="bg-slate-800">
 
       <Drawer.Header class="text-left">
-        <Drawer.Title>View Profile</Drawer.Title>
+        <Drawer.Title>View Stats</Drawer.Title>
         <Drawer.Description>
-          View stats about your activity here
+          View stats about your activity
         </Drawer.Description>
       </Drawer.Header>
 
-      <!-- <form class="grid items-start gap-4 px-4">
-        <div class="grid gap-2">
-          <Label for="email">Email</Label>
-          <Input type="email" id="email" value="shadcn@example.com" />
+      {#if results.length > 0}
+        <div class="my-8 w-full max-w-md px-4 ">
+            <h2 class="text-xl font-bold mb-2">Results</h2>
+            <table class="w-full border-collapse border border-gray-700">
+                <thead>
+                    <tr class="bg-gray-800">
+                        <th class="border border-gray-700 px-2 py-1">Round</th>
+                        <th class="border border-gray-700 px-2 py-1">Deep Breathing</th>
+                        <th class="border border-gray-700 px-2 py-1">Exhale Hold</th>
+                        <th class="border border-gray-700 px-2 py-1">Inhale Hold</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each results as result}
+                        <tr class="text-center">
+                            <td class="border border-gray-700 px-2 py-1">{result.round}</td>
+                            <td class="border border-gray-700 px-2 py-1">{result.breathCount} breaths</td>
+                            <td class="border border-gray-700 px-2 py-1">{result.exhaleHold}s</td>
+                            <td class="border border-gray-700 px-2 py-1">{15 - Number(result.inhaleHold)}s</td>
+                        </tr>
+                    {/each}
+                </tbody>
+            </table>
         </div>
-        <div class="grid gap-2">
-          <Label for="username">Username</Label>
-          <Input id="username" value="@shadcn" />
-        </div>
-        <Button type="submit">Save changes</Button>
-      </form> -->
+      {/if}
+
+
+
+
+
 
       <Drawer.Footer class="pt-2">
         <Drawer.Close asChild let:builder>
@@ -66,86 +88,42 @@
     <Dialog.Content class="sm:max-w-[425px] bg-slate-800">
 
       <Drawer.Header class="text-left">
-        <Drawer.Title>View Profile</Drawer.Title>
+        <Drawer.Title>View Stats</Drawer.Title>
         <Drawer.Description>
-          View stats about your activity here
+          View stats about your activity
         </Drawer.Description>
       </Drawer.Header>
 
-      <!-- <form class="grid items-start gap-4">
-        <div class="grid gap-2">
-          <Label for="email">Email</Label>
-          <Input type="email" id="email" value="shadcn@example.com" />
+      {#if results.length > 0}
+        <div class="my-8 w-full max-w-md px-4 ">
+            <h2 class="text-xl font-bold mb-2">Results</h2>
+            <table class="w-full border-collapse border border-gray-700">
+                <thead>
+                    <tr class="bg-gray-800">
+                        <th class="border border-gray-700 px-2 py-1">Round</th>
+                        <th class="border border-gray-700 px-2 py-1">Deep Breathing</th>
+                        <th class="border border-gray-700 px-2 py-1">Exhale Hold</th>
+                        <th class="border border-gray-700 px-2 py-1">Inhale Hold</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each results as result}
+                        <tr class="text-center">
+                            <td class="border border-gray-700 px-2 py-1">{result.round}</td>
+                            <td class="border border-gray-700 px-2 py-1">{result.breathCount} breaths</td>
+                            <td class="border border-gray-700 px-2 py-1">{result.exhaleHold}s</td>
+                            <td class="border border-gray-700 px-2 py-1">{15 - Number(result.inhaleHold)}s</td>
+                        </tr>
+                    {/each}
+                </tbody>
+            </table>
         </div>
-        <div class="grid gap-2">
-          <Label for="username">Username</Label>
-          <Input id="username" value="@shadcn" />
-        </div>
-        <Button type="submit">Save changes</Button>
-      </form> -->
+      {/if}
+
+
 
     </Dialog.Content>
   </Dialog.Root>
 {/if}
 
 
-<!-- {#if $isDesktop}
-  <Dialog.Root bind:open>
-    <Dialog.Trigger asChild let:builder>
-      <Button variant="outline" builders={[builder]}>Edit Profile</Button>
-    </Dialog.Trigger>
-    <Dialog.Content class="sm:max-w-[425px]">
-      <Dialog.Header>
-        <Dialog.Title>Edit profile</Dialog.Title>
-        <Dialog.Description>
-          Make changes to your profile here. Click save when you're done.
-        </Dialog.Description>
-      </Dialog.Header>
-      <form class="grid items-start gap-4">
-        <div class="grid gap-2">
-          <Label for="email">Email</Label>
-          <Input type="email" id="email" value="shadcn@example.com" />
-        </div>
-        <div class="grid gap-2">
-          <Label for="username">Username</Label>
-          <Input id="username" value="@shadcn" />
-        </div>
-        <Button type="submit">Save changes</Button>
-      </form>
-    </Dialog.Content>
-  </Dialog.Root>
-{:else} -->
-  <!-- <Drawer.Root bind:open={open}>
-    <Drawer.Trigger asChild let:builder>
-      <Button class="" variant="default" builders={[builder]}>
-        <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-      </svg>
-    </Button>
-    </Drawer.Trigger>
-    <Drawer.Content>
-      <Drawer.Header class="text-left">
-        <Drawer.Title>Edit profile</Drawer.Title>
-        <Drawer.Description>
-          Make changes to your profile here. Click save when you're done.
-        </Drawer.Description>
-      </Drawer.Header>
-      <form class="grid items-start gap-4 px-4">
-        <div class="grid gap-2">
-          <Label for="email">Email</Label>
-          <Input type="email" id="email" value="shadcn@example.com" />
-        </div>
-        <div class="grid gap-2">
-          <Label for="username">Username</Label>
-          <Input id="username" value="@shadcn" />
-        </div>
-        <Button type="submit">Save changes</Button>
-      </form>
-      <Drawer.Footer class="pt-2">
-        <Drawer.Close asChild let:builder>
-          <Button variant="outline" builders={[builder]}>Cancel</Button>
-        </Drawer.Close>
-      </Drawer.Footer>
-    </Drawer.Content>
-  </Drawer.Root> -->
-<!-- {/if} -->
