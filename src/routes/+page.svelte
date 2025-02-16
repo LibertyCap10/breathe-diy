@@ -8,9 +8,20 @@
     import logo from '$lib/assets/breathe-logo-transparent.png';
     import Drawer from './Drawer.svelte';
 
-    import { isMobile } from '$lib/stores/screen';
+    import {page} from '$app/state';
+    
+    // import type { PageData } from './$types';
 
-    // let open = false;
+    let { data: data } = $props();
+        
+    let version = data.version;
+
+    // import { isMobile } from '$lib/stores/screen';
+
+    // export let data;
+    
+    // let { version } = $props();
+        // let open = false;
 
     // let menuOpen = false;
     let lastTap = 0;
@@ -228,7 +239,7 @@
 </nav>
 
 
-<div class="flex flex-col items-center justify-center bg-gray-900 text-white p-0 mt-6">
+<div class="flex flex-col items-center justify-center bg-gray-900 text-white p-2 mt-6">
     <div class="flex space-x-0 mb-8">
         <div class={`px-2 py-2 rounded-sm text-sm ${state.phase === 'deep-breathing' ? 'bg-blue-500 text-white' : 'bg-gray-700'}`}>Deep Breathing</div>
 
@@ -273,34 +284,20 @@
 </div>
 
 
+<div class="fixed bottom-2 right-2 text-sm text-gray-500">
+    v{version}
+  </div>
+
 
 
 <div class="flex flex-col items-center justify-center bg-gray-900 text-white p-4">
 
-
-    <!-- <div class="mt-6 w-full max-w-md">
-        <h2 class="text-xl font-bold mb-2">Results</h2>
-        <canvas bind:this={chartCanvas} class="w-full max-w-md max-h-90 h-64 mt-6"></canvas>
-    </div> -->
-
     {#if state.showResultsOverlay}
         <div class="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 backdrop-blur-md">
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-11/12 max-w-lg text-center">
-                <!-- <h2 class="text-xl font-bold mb-4">Session Results</h2> -->
-
-                <!-- <div class="mt-6 w-full max-w-md">
-                    <h2 class="text-xl font-bold mb-2">Results</h2>
-                    <canvas bind:this={chartCanvas} class="w-full max-w-md max-h-90 h-64 mt-6"></canvas>
-                </div>  -->
 
                 <BarChart results={state.results} class="mb-8" />
                 <LineChart results={state.results} class="mb-8" />
-
-
-                <!-- <div class="w-48 h-48">
-                    <canvas bind:this={chartCanvas}></canvas>
-                </div>
-             -->
 
                 <button class="mt-6 bg-green-500 px-6 py-3 text-xl rounded-lg" onclick={startSession}>
                     Start A New Session
