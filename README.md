@@ -1,3 +1,8 @@
-# breathe.diy
 
-A breathework app so that I don't have to pay for someone else's service
+<img src="./src/lib/assets/breathe-logo-transparent.png" alt="My Image" width="100">
+
+<br />
+
+### breathe.diy
+
+A simple breathework app
